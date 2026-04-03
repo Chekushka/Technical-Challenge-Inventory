@@ -3,26 +3,18 @@ using UnityEngine;
 
 namespace Logic
 {
+    [RequireComponent(typeof(LootSource))]
     public class BreakableObject  : MonoBehaviour
     {
-        [SerializeField] private DroppedItem _itemPrefab;
-        [SerializeField] private LootGenerator _generator;
         [SerializeField] private ParticleSystem _breakEffect;
-
-        private void OnMouseDown()
-        {
-            Break();
-        }
+        private LootSource _lootSource;
+        
+        private void Awake() => _lootSource = GetComponent<LootSource>();
 
         public void Break()
         {
-            ItemInstance loot = _generator.GenerateRandomLoot();
-            
-            DroppedItem droppedObj = Instantiate(_itemPrefab, transform.position, Quaternion.identity);
-            droppedObj.Init(loot);
-            droppedObj.Pop();
-            
             if (_breakEffect != null) Instantiate(_breakEffect, transform.position, Quaternion.identity);
+            if (_lootSource != null) _lootSource.DropLoot();
 
             Destroy(gameObject);
         }

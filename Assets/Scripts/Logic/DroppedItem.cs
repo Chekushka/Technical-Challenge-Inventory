@@ -23,7 +23,7 @@ namespace Logic
         public void Init(ItemInstance item)
         {
             _item = item;
-            _rarityColor = item.GetDisplayColor();
+            _rarityColor = item.GetColor();
             
             _materialInstance = _meshRenderer.material;
             _materialInstance.EnableKeyword("_EMISSION");

@@ -9,7 +9,7 @@ namespace Data
         [System.Serializable]
         public struct RarityConfig
         {
-            public ItemRarity rarity;
+            public ItemRarity rarityType;
             public Color color;
             public float valueMultiplier;
         }
@@ -18,7 +18,7 @@ namespace Data
         
         public RarityConfig GetConfig(ItemRarity rarity)
         {
-            return configs.FirstOrDefault(c => c.rarity == rarity);
+            return configs.FirstOrDefault(c => c.rarityType == rarity);
         }
     }
 }
