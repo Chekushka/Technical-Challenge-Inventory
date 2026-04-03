@@ -2,11 +2,10 @@ namespace Data
 {
     public enum ItemCategory
     {
-        Sword,
-        Spear,
+        Weapon,
         Armor,
-        Helmet,
-        Shield,
-        Potion
+        Consumable,
+        Material,
+        Misc
     }
 }

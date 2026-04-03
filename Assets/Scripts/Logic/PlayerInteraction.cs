@@ -3,47 +3,45 @@ using UnityEngine.InputSystem;
 
 namespace Logic
 {
+    [RequireComponent(typeof(PlayerInputProvider))]
     public class PlayerInteraction : MonoBehaviour
     {
         [Header("Settings")]
         [SerializeField] private float _interactionRadius = 3f;
         [SerializeField] private LayerMask _interactableLayer;
-    
-        [Header("Input")]
-        [SerializeField] private InputActionReference _interactAction;
 
+        private PlayerInputProvider _input;
         private IInteractable _currentTarget;
+        private PlayerAnimator _animator;
         
-        private void OnEnable()
+        private void Awake()
         {
-            if (_interactAction != null)
-            {
-                _interactAction.action.performed += OnInteractPerformed;
-                _interactAction.action.Enable();
-            }
+            _animator = GetComponent<PlayerAnimator>();
+            _input = GetComponent<PlayerInputProvider>();
         }
+        
+        private void OnEnable() => _input.OnInteract += HandleInteraction;
 
-        private void OnDisable()
+        private void OnDisable() =>  _input.OnInteract -= HandleInteraction;
+        
+        private void HandleInteraction()
         {
-            if (_interactAction != null)
+            if (_currentTarget != null)
             {
-                _interactAction.action.performed -= OnInteractPerformed;
-                _interactAction.action.Disable();
+                _animator.PlayPickUp();
+                _input.IsLocked = true;
+                
+                _animator.OnAnimationImpact = () => {
+                    _currentTarget.Interact();
+                    _currentTarget = null;
+                    _input.IsLocked = false;
+                };
             }
         }
 
         private void Update()
         {
             FindClosestInteractable();
-        }
-        
-        private void OnInteractPerformed(InputAction.CallbackContext context)
-        {
-            if (_currentTarget != null)
-            {
-                _currentTarget.Interact();
-                _currentTarget = null;
-            }
         }
 
         private void FindClosestInteractable()

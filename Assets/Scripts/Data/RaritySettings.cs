@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Data
 {
     [CreateAssetMenu(fileName = "RaritySettings", menuName = "Inventory/Rarity Settings")]
-    public abstract class RaritySettings : ScriptableObject
+    public class RaritySettings : ScriptableObject
     {
         [System.Serializable]
         public struct RarityConfig

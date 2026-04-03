@@ -1,3 +1,4 @@
+using System.Collections;
 using Data;
 using UnityEngine;
 
@@ -61,8 +62,27 @@ namespace Logic
             if (InventoryController.Instance != null)
             {
                 InventoryController.Instance.AddItem(_item);
-                Destroy(gameObject);
+                StartCoroutine(PickUpSequence());
             }
+        }
+        
+        private IEnumerator PickUpSequence()
+        {
+            GetComponent<Collider>().enabled = false;
+
+            Vector3 startScale = transform.localScale;
+            float elapsed = 0f;
+            float duration = 0.2f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                transform.localScale = Vector3.Lerp(startScale, Vector3.zero, elapsed / duration);
+                yield return null;
+            }
+
+            InventoryController.Instance.AddItem(_item);
+            Destroy(gameObject);
         }
     }
 }
