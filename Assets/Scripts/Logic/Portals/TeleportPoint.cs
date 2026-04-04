@@ -8,7 +8,7 @@ namespace Logic.Portals
 
         private TeleportService _teleportService;
 
-        private void Awake()
+        private void Start()
         {
             _teleportService = TeleportServiceProvider.Instance.TeleportService;
             _teleportService.RegisterPoint(pointId, transform);

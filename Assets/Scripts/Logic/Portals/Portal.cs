@@ -15,7 +15,7 @@ namespace Logic.Portals
         private TeleportService _teleportService;
         private CanvasFader _fader;
 
-        private void Awake()
+        private void Start()
         {
             _teleportService = TeleportServiceProvider.Instance.TeleportService;
             _fader = CanvasFader.Instance;

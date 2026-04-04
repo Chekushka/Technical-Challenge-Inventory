@@ -12,7 +12,6 @@ namespace Logic
         
         [Header("References")]
         [SerializeField] private MeshRenderer _meshRenderer;
-        [SerializeField] private GameObject _interactionUI;
         
         [Header("Settings")]
         [SerializeField] private float _idleEmissionIntensity = 1.5f;
@@ -29,7 +28,6 @@ namespace Logic
             _materialInstance = _meshRenderer.material;
             _materialInstance.EnableKeyword("_EMISSION");
             SetEmission(_idleEmissionIntensity);
-            _interactionUI.SetActive(false);
         }
 
         public void Pop()
@@ -48,13 +46,11 @@ namespace Logic
         public void OnHoverEnter()
         {
             SetEmission(_hoverEmissionIntensity);
-            _interactionUI.SetActive(true);
         }
 
         public void OnHoverExit()
         {
             SetEmission(_idleEmissionIntensity);
-            _interactionUI.SetActive(false);
         }
 
         public void Interact()

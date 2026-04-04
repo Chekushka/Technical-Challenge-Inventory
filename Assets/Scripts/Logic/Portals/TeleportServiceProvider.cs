@@ -16,10 +16,6 @@ namespace Logic.Portals
                 return;
             }
             Instance = this;
-        }
-
-        private void OnValidate()
-        {
             TeleportService = new TeleportService();
         }
     }

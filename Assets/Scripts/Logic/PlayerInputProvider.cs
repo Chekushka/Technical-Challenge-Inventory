@@ -14,7 +14,10 @@ namespace Logic
         [SerializeField] private InputActionReference _interactAction;
         [SerializeField] private InputActionReference _inventoryAction;
         [SerializeField] private InputActionReference _attackAction;
+        [Header("Mouse Settings")]
+        [SerializeField] private InputActionReference _mousePositionAction;
 
+        public Vector2 MousePosition { get; private set; }
         public Vector2 MoveInput { get; private set; }
 
         public event Action OnInteract;
@@ -42,6 +45,8 @@ namespace Logic
                 _attackAction.action.Enable();
                 _attackAction.action.performed += PerformAttack;
             }
+            
+            _mousePositionAction.action.Enable();
         }
 
         private void OnDisable()
@@ -65,6 +70,8 @@ namespace Logic
                 _attackAction.action.Disable();
                 _attackAction.action.performed -= PerformAttack;
             }
+            
+            _mousePositionAction.action.Disable();
         }
 
         private void Update()
@@ -74,10 +81,15 @@ namespace Logic
                 MoveInput = Vector2.zero;
                 return;
             }
-
+            
             if (_moveAction != null)
             {
                 MoveInput = _moveAction.action.ReadValue<Vector2>();
+            }
+            
+            if (_mousePositionAction != null)
+            {
+                MousePosition = _mousePositionAction.action.ReadValue<Vector2>();
             }
         }
 

@@ -8,6 +8,7 @@ namespace Logic
     {
         [Header("Settings")]
         [SerializeField] private float _interactionRadius = 3f;
+        [SerializeField] private GameObject _interactableUI;
         [SerializeField] private LayerMask _interactableLayer;
 
         private PlayerInputProvider _input;
@@ -47,6 +48,8 @@ namespace Logic
         private void FindClosestInteractable()
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position, _interactionRadius, _interactableLayer);
+            
+            _interactableUI.SetActive(colliders.Length > 0);
         
             IInteractable closestInteractable = null;
             float closestDistance = float.MaxValue;

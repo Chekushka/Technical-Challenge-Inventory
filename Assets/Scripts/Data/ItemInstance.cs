@@ -1,4 +1,5 @@
 using System;
+using Data.Modifiers;
 using UnityEngine;
 
 namespace Data
@@ -6,14 +7,14 @@ namespace Data
     [Serializable]
     public class ItemInstance
     {
-        public BaseItemData itemData;
+        public BaseItemData data;
         public ItemModifier modifier;
         public RaritySettings.RarityConfig rarity;
 
-        public ItemInstance(BaseItemData itemData, ItemModifier modifier = null,
+        public ItemInstance(BaseItemData data, ItemModifier modifier = null,
             RaritySettings.RarityConfig rarity = default)
         {
-            this.itemData = itemData;
+            this.data = data;
             this.modifier = modifier;
             this.rarity = rarity;
         }
@@ -27,18 +28,18 @@ namespace Data
         {
             string rarityPrefix = $"{rarity.rarityType} ";
             string modPrefix = modifier != null ? $"{modifier.prefix} " : "";
-            return $"{rarityPrefix}{modPrefix}{itemData.itemName}";
+            return $"{rarityPrefix}{modPrefix}{data.itemName}";
         }
 
         public int GetPrice()
         {
-            return modifier != null ? modifier.ModifyValue(itemData.baseValue) : itemData.baseValue;
+            return modifier != null ? modifier.ModifyValue(data.baseValue) : data.baseValue;
         }
 
         public int GetTotalValue()
         {
             float rarityMult = rarity.valueMultiplier;
-            int value = Mathf.RoundToInt(itemData.baseValue * rarityMult);
+            int value = Mathf.RoundToInt(data.baseValue * rarityMult);
 
             if (modifier != null)
             {

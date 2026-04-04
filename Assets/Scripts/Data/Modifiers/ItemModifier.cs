@@ -1,11 +1,11 @@
 using UnityEngine;
 
-namespace Data
+namespace Data.Modifiers
 {
-    [CreateAssetMenu(fileName = "NewModifier", menuName = "Inventory/Modifier")]
     public abstract class ItemModifier : ScriptableObject
     {
         public string prefix;
+        public Vector2Int modifierValueRange;
 
         public abstract int ModifyValue(int currentValue);
     }

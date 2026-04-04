@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92348bf88e374a0ab61c6c18bc1d24cf, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: Assembly-CSharp::Data.BaseItemData
-  itemName: 
-  description: 
-  icon: {fileID: 0}
-  baseValue: 10
+  itemName: Sword
+  description: A finely balanced blade forged for swift and lethal close-quarters
+    combat against any foe.
+  icon: {fileID: 21300000, guid: a063f18f91f75754b833c6b43e6765ec, type: 3}
+  baseValue: 120
   itemCategory: 0
