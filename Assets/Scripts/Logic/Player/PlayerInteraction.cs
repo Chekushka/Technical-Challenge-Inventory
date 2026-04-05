@@ -1,14 +1,13 @@
+using Logic.Core;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-namespace Logic
+namespace Logic.Player
 {
     [RequireComponent(typeof(PlayerInputProvider))]
     public class PlayerInteraction : MonoBehaviour
     {
         [Header("Settings")]
         [SerializeField] private float _interactionRadius = 3f;
-        [SerializeField] private GameObject _interactableUI;
         [SerializeField] private LayerMask _interactableLayer;
 
         private PlayerInputProvider _input;
@@ -31,12 +30,9 @@ namespace Logic
             {
                 _animator.PlayPickUp();
                 _input.IsLocked = true;
-                
-                _animator.OnAnimationImpact = () => {
-                    _currentTarget.Interact();
-                    _currentTarget = null;
-                    _input.IsLocked = false;
-                };
+                _currentTarget.Interact();
+                _currentTarget = null;
+                _input.IsLocked = false;
             }
         }
 
@@ -49,7 +45,10 @@ namespace Logic
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position, _interactionRadius, _interactableLayer);
             
-            _interactableUI.SetActive(colliders.Length > 0);
+            if(colliders.Length > 0)
+                HintButtonsController.Instance.EnableInteractHint();
+            else
+                HintButtonsController.Instance.DisableInteractHint();
         
             IInteractable closestInteractable = null;
             float closestDistance = float.MaxValue;

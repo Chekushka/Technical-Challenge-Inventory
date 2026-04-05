@@ -1,43 +1,82 @@
 using System;
+using System.Collections.Generic;
 using Data;
 using UnityEngine;
 
-namespace Logic
+public class InventoryController : MonoBehaviour
 {
-    public class InventoryController : MonoBehaviour
+    [SerializeField] private InventoryData _inventoryData;
+    public static InventoryController Instance { get; private set; }
+    
+    public HashSet<ItemInstance> SelectedForScrap { get; private set; } = new HashSet<ItemInstance>();
+    public bool IsScrapMode { get; set; } = false;
+    public int TotalScrap { get; private set; }
+    
+    public event Action<int> OnScrapTotalChanged;
+    public event Action OnInventoryUpdated;
+
+    private void Awake()
     {
-        [SerializeField] private InventoryData _data;
-        public static InventoryController Instance { get; private set; }
-        public event Action OnInventoryUpdated;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        TotalScrap = _inventoryData.currentScrap;
+    }
+
+    public int GetCapacity() => _inventoryData.capacity;
+    
+    public void IncreaseCapacity(int amount) => _inventoryData.capacity += amount;
+    
+    public List<ItemInstance> GetItems() => _inventoryData.items;
+    
+    public bool TryAddItem(ItemInstance item)
+    {
+        if (item == null) return false;
+        if (_inventoryData.items.Contains(item))
+            return false;
         
-        private void Awake()
+        if (_inventoryData.items.Count >= _inventoryData.capacity)
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            Instance = this;
+            return false;
         }
 
-        public void AddItem(ItemInstance item)
+        _inventoryData.items.Add(item);
+        OnInventoryUpdated?.Invoke();
+        return true;
+    }
+
+    public void ToggleScrapSelection(ItemInstance item)
+    {
+        if (!IsScrapMode || item == null) return;
+        
+        if (!_inventoryData.items.Contains(item))
+            return;
+        
+        if (SelectedForScrap.Contains(item))
+            SelectedForScrap.Remove(item);
+        else
+            SelectedForScrap.Add(item);
+
+        OnInventoryUpdated?.Invoke();
+    }
+
+    public void ConfirmScrap()
+    {
+        int totalScrapGained = 0;
+        foreach (var item in SelectedForScrap)
         {
-            if(item == null) return;
-            _data.items.Add(item);
-            
-            OnInventoryUpdated?.Invoke();
+            totalScrapGained += item.GetTotalValue();
+            _inventoryData.items.Remove(item);
         }
 
-        public void ScrapItem(ItemInstance item)
-        {
-            if(!_data.items.Contains(item)) return;
+        _inventoryData.currentScrap += totalScrapGained;
+        TotalScrap = _inventoryData.currentScrap;
 
-            int value = item.GetPrice();
-            _data.currentScrap += value;
-            OnInventoryUpdated?.Invoke();
-            Debug.Log($"Scrapped {item.GetDisplayName()} for {value} dust.");
-        }
-
-        public InventoryData GetData() => _data;
+        SelectedForScrap.Clear();
+        OnInventoryUpdated?.Invoke();
+        OnScrapTotalChanged?.Invoke(TotalScrap);
     }
 }

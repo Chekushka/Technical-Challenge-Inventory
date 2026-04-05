@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Logic
+namespace Logic.Player
 {
     public class PlayerInputProvider : MonoBehaviour
     {
@@ -76,6 +76,11 @@ namespace Logic
 
         private void Update()
         {
+            if (_mousePositionAction != null)
+            {
+                MousePosition = _mousePositionAction.action.ReadValue<Vector2>();
+            }
+            
             if (IsLocked)
             {
                 MoveInput = Vector2.zero;
@@ -85,11 +90,6 @@ namespace Logic
             if (_moveAction != null)
             {
                 MoveInput = _moveAction.action.ReadValue<Vector2>();
-            }
-            
-            if (_mousePositionAction != null)
-            {
-                MousePosition = _mousePositionAction.action.ReadValue<Vector2>();
             }
         }
 

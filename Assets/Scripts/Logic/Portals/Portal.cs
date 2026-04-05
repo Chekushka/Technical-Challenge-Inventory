@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Logic.Player;
 using UI;
 using UnityEngine;
 using UnityEngine.Events;

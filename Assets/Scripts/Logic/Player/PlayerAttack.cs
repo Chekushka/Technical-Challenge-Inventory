@@ -1,6 +1,7 @@
+using Logic.Environment;
 using UnityEngine;
 
-namespace Logic
+namespace Logic.Player
 {
     public class PlayerAttack : MonoBehaviour
     {

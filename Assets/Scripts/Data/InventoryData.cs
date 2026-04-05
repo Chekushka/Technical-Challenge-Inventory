@@ -8,5 +8,6 @@ namespace Data
     {
         public List<ItemInstance> items = new List<ItemInstance>();
         public int currentScrap = 0;
+        public int capacity = 20;
     }
 }

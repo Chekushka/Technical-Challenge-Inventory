@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-namespace Logic
+namespace Logic.Player
 {
     [RequireComponent(typeof(Rigidbody), typeof(PlayerInputProvider))]
     public class PlayerMovement : MonoBehaviour

@@ -1,5 +1,6 @@
 using System.Collections;
 using Data;
+using Logic.Core;
 using UnityEngine;
 
 namespace Logic
@@ -16,6 +17,8 @@ namespace Logic
         [Header("Settings")]
         [SerializeField] private float _idleEmissionIntensity = 1.5f;
         [SerializeField] private float _hoverEmissionIntensity = 4.0f;
+        
+        private Coroutine _pickUpSequence;
         
         private Material _materialInstance;
         private Color _rarityColor;
@@ -57,8 +60,14 @@ namespace Logic
         {
             if (InventoryController.Instance != null)
             {
-                InventoryController.Instance.AddItem(_item);
-                StartCoroutine(PickUpSequence());
+                if (InventoryController.Instance.TryAddItem(_item))
+                {
+                    _pickUpSequence ??= StartCoroutine(PickUpSequence());
+                }
+                else
+                {
+                    HintButtonsController.Instance.ShowInventoryFullWarning();
+                }
             }
         }
         
@@ -77,8 +86,9 @@ namespace Logic
                 yield return null;
             }
 
-            InventoryController.Instance.AddItem(_item);
+            InventoryController.Instance.TryAddItem(_item);
             Destroy(gameObject);
+            _pickUpSequence = null;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Logic
             BaseItemData randomBase = _allPossibleItems[Random.Range(0, _allPossibleItems.Count)];
             RaritySettings.RarityConfig randomRarity = raritySettings.GetConfig((ItemRarity)Random.Range(0, System.Enum.GetValues(typeof(ItemRarity)).Length));
             ItemModifier randomModifier = null;
-            if (Random.value > 0.5f && _allPossibleModifiers.Count > 0)
+            if (_allPossibleModifiers.Count > 0)
             {
                 randomModifier = _allPossibleModifiers[Random.Range(0, _allPossibleModifiers.Count)];
             }

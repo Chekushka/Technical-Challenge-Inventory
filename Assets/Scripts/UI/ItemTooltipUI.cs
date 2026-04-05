@@ -1,8 +1,8 @@
 using Data;
 using Logic;
+using Logic.Player;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI
 {
@@ -12,7 +12,6 @@ namespace UI
 
         [Header("UI Elements")]
         [SerializeField] private GameObject _panel;
-        [SerializeField] private Image _iconImage;
         [SerializeField] private TextMeshProUGUI _nameText;
         [SerializeField] private TextMeshProUGUI _categoryText;
         [SerializeField] private TextMeshProUGUI _rarityText;
@@ -29,34 +28,23 @@ namespace UI
         public void Show(ItemInstance item)
         {
             _panel.SetActive(true);
-
-            _iconImage.sprite = item.data.icon;
+            
             _nameText.text = item.GetDisplayName();
             _nameText.color = item.GetColor();
 
             _categoryText.text = $"Category: {item.data.itemCategory}";
-            _rarityText.text = $"Rarity: {item.rarity}";
+            _rarityText.text = $"Rarity: {item.rarity.rarityType}";
             _rarityText.color = item.GetColor();
         
             _descriptionText.text = item.data.description;
             _valueText.text = $"Scrap Value: {item.GetTotalValue()}";
-        
-            // Можна додати логіку, щоб вікно слідувало за мишкою
-            // transform.position = Input.mousePosition;
+            Vector2 offset = new Vector2(200, -200);
+            _panel.transform.position = _input.MousePosition + offset;
         }
 
         public void Hide()
         {
             _panel.SetActive(false);
-        }
-
-        private void Update()
-        {
-            if (_panel.activeSelf)
-            {
-                Vector3 offset = new Vector3(15, -15, 0);
-                transform.position = Input.mousePosition + offset;
-            }
         }
     }
 }

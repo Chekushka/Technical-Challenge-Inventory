@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Logic
+namespace Logic.Environment
 {
     public class PropZoneSpawner : MonoBehaviour
     {

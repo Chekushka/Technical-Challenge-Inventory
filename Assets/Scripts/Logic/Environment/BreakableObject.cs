@@ -1,7 +1,6 @@
-using Data;
 using UnityEngine;
 
-namespace Logic
+namespace Logic.Environment
 {
     [RequireComponent(typeof(LootSource))]
     public class BreakableObject  : MonoBehaviour

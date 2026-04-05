@@ -10,6 +10,8 @@ namespace Data
         public BaseItemData data;
         public ItemModifier modifier;
         public RaritySettings.RarityConfig rarity;
+        
+        public string UniqueId { get; private set; }
 
         public ItemInstance(BaseItemData data, ItemModifier modifier = null,
             RaritySettings.RarityConfig rarity = default)
@@ -17,6 +19,22 @@ namespace Data
             this.data = data;
             this.modifier = modifier;
             this.rarity = rarity;
+            
+            UniqueId = Guid.NewGuid().ToString();
+        }
+        
+        public override bool Equals(object obj)
+        {
+            if (obj is ItemInstance other)
+            {
+                return UniqueId == other.UniqueId;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return UniqueId.GetHashCode();
         }
 
         public Color GetColor()

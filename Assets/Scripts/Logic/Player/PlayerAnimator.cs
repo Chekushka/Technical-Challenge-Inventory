@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace Logic
+namespace Logic.Player
 {
     [RequireComponent(typeof(Animator))]
     public class PlayerAnimator :  MonoBehaviour
@@ -14,10 +13,10 @@ namespace Logic
         private static readonly int AttackHash = Animator.StringToHash("Attack");
         private static readonly int PickUpHash = Animator.StringToHash("PickUp");
         
-        public Action OnAnimationImpact;
         
         public void PlayAttack() => _animator.SetTrigger(AttackHash);
-        public void PlayPickUp() => _animator.SetTrigger(PickUpHash);
+
+        public void PlayPickUp() =>  _animator.SetTrigger(PickUpHash);
 
         private void Awake()
         {
@@ -28,11 +27,6 @@ namespace Logic
         {
             float currentSpeed = _input.MoveInput.sqrMagnitude;
             _animator.SetFloat(SpeedHash, currentSpeed, _dampTime, Time.deltaTime);
-        }
-        
-        public void ExecuteInteraction()
-        {
-            OnAnimationImpact?.Invoke();
         }
     }
 }
